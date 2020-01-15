@@ -1,30 +1,28 @@
 <script>
-	export let name;
+  import Fetch from "./Fetch.svelte";
+  import Form from "./Form.svelte";
+
+  const props = {
+    url: "https://jsonplaceholder.typicode.com/todos",
+    title: "A list of todos"
+  };
+  let searchTerm;
+
+  function handleSubmit() {
+    console.log({ this: this });
+    const { value } = this.elements.search;
+    searchTerm = value;
+  }
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<Form {handleSubmit} />
 
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
+<Fetch {searchTerm} let:data>
+  <ul>
+    {#each data as link}
+      <li>
+        <a href={link.url}>{link.title}</a>
+      </li>
+    {/each}
+  </ul>
+</Fetch>
